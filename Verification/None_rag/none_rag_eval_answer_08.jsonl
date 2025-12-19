@@ -1,0 +1,18 @@
+{"id": 1, "answer": "Dependency Trace\nsensors(SensorData).\ncomponent(ObjectDetection).\nalgorithm(ObjectTracking).\nsystem_description(EnvironmentalRepresentation).\nFinal Answer:", "timestamp": "2025-11-24T11:54:13.381957"}
+{"id": 2, "answer": "Dependency Trace\nobject_detection_module(Module).\npedestrian(Object).\ndistance(50m).\nnominal_conditions(Conditions).\nwidth_estimation(Function).\nposition_estimation(Function).\nreliability(Characteristic).\nsensor(Camera).\nalgorithm(ConvolutionalNeuralNetwork).\nFinal Answer:", "timestamp": "2025-11-24T11:54:19.427255"}
+{"id": 3, "answer": "Dependency Trace\nml_safety_requirement(Periodic Self-Validation).\ncomponent(ML Perception Module).\nalgorithm(Machine Learning).\nml_flow(Runtime Consistency).\nml_flow(Prevent Model Drift).\nsensors(Reference Scenes).\nsensors(Calibration Targets).\n\nFinal Answer:\n", "timestamp": "2025-11-24T11:54:25.176468"}
+{"id": 4, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:30.328622"}
+{"id": 5, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:35.414862"}
+{"id": 6, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:40.537453"}
+{"id": 7, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:45.631600"}
+{"id": 8, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:50.711261"}
+{"id": 9, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:54:55.809795"}
+{"id": 10, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:00.913042"}
+{"id": 11, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:06.017452"}
+{"id": 12, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:11.144641"}
+{"id": 13, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:16.229344"}
+{"id": 14, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:21.337819"}
+{"id": 15, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:26.415497"}
+{"id": 16, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:31.507730"}
+{"id": 17, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:36.591827"}
+{"id": 18, "answer": "Dependency Trace\nalgorithm(ObjectDetection).\nmodel(YOLOv5).\nsensors(Mono Camera).\nFinal Answer:", "timestamp": "2025-11-24T11:55:41.699038"}
