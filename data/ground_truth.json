@@ -1,0 +1,17 @@
+[
+  {
+    "ID": "1",
+    "Requirement": "Develop an algorithm for sensor data processing.",
+    "1-hop": [
+      "model",
+      "method"
+    ],
+    "2-hop": [
+      "system",
+      "component"
+    ],
+    "3-hop": [
+      "environment"
+    ]
+  }
+]
