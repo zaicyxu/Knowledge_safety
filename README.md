@@ -10,23 +10,6 @@
 	- ~~What kind of functionalities containing this system?~~
 	- ~~Which sensor is most related to the pedestrian detection?~~
 
-#### Issues from the Orchestrator Sides
-
-1. Unify the name between LLM and Prolog.
-
-​	e.g., mono_camera and Mono Camera.
-
-2. What's the queries for Prolog ???
-
-#### Issues from Current Framework
-
-1. Whats' the relationships between Neo4j and Prolog?
-
-a) Prolog generates the inferred graphs, which contain the facts existed in the Logic knowledgebase.
-
-2. What's the input of the framework?
-
-a) Test cases and other system-related questions
 
 3. What's the main workflow of the framework?
 
@@ -38,7 +21,7 @@ b) **Constructing the logic-based knowledgebase**
 
 ​	b.2) LLM-based Interpreter used to translate the reuqirements to logic representations (RAG).
 
-​	b.3) LLM-based aligner used to support the multiple step reasoning via Prolog.
+​	b.3) LLM-based aligner used to support the multiple step reasoning.
 
 ​	b.4) The purpose of logic-based knowledgebase is to map the requirements with the design-time information.
 
@@ -53,8 +36,6 @@ b) **Constructing the logic-based knowledgebase**
 ​	c.1) Input: Test cases and other systems-related questions
 
 ​	c.2) LLM-based Interprete
-
-​	c.3) Prolog-based logic solver.
 
 
 
