@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "question": "In what way do manufacturers like adept-technologies.com interact with hardening through Sub_business relationships?",
+    "answer": "certification('ISO9001').\ncertifies('adept-technologies.com', 'ISO9001').\ncertifies('adept-technologies.com', 'adept-technologies.com').\nentity('adept-technologies.com').\nmanufactor('149401-us.all.biz').\nmanufactor('adept-technologies.com').\nmaterial('rubber').\nprocesses('adept-technologies.com', '149401-us.all.biz').\nprocesses('adept-technologies.com', 'rubber').",
+    "timestamp": "2025-12-05T10:17:43.367563",
+    "latency_ms": 6680
+  },
+  {
+    "id": 2,
+    "question": "In what way do manufacturers like 3dmachineco.com interact with casitng through Sub_business relationships?",
+    "answer": "Sorry, I couldn't generate an answer due to an error.",
+    "timestamp": "2025-12-05T10:17:49.286145",
+    "latency_ms": 2905
+  },
+  {
+    "id": 3,
+    "question": "To what extent does abbott-tool.com maintain an active relationship with refrigeration via Sub_industry relationships?",
+    "answer": "certification('ISO9001'), certifies('abbott-tool.com', 'ISO9001').\nentity('abbott-tool.com'), certifies('abbott-tool.com', 'ISO9001').\nentity('abbott-tool.com'), certifies('abbott-tool.com', 'abbott-tool.com').",
+    "timestamp": "2025-12-05T10:17:56.918982",
+    "latency_ms": 4629
+  },
+  {
+    "id": 4,
+    "question": "What are the specific pathways through which aamachineco.com maintains links to fabricmill via Sub_industry?",
+    "answer": "certification('ISO9001'), certifies('aamachineco.com', 'ISO9001').\ncertification('ISO9001').\nentity('aamachineco.com'), certifies('aamachineco.com', 'ISO9001').\nentity('aamachineco.com'), certifies('aamachineco.com', 'aamachineco.com').\nentity('aamachineco.com'), processes('aamachineco.com', '149401-us.all.biz').\nentity('aamachineco.com'), processes('aamachineco.com', 'rubber').\nentity('aamachineco.com').\nmanufactor('149401-us.all.biz'), processes('aamachineco.com', '149401-us.all.biz').\nmanufactor('149401-us.all.biz').\nmaterial('rubber'), processes('aamachineco.com', 'rubber').\nmaterial('rubber').",
+    "timestamp": "2025-12-05T10:18:03.430860",
+    "latency_ms": 3506
+  },
+  {
+    "id": 5,
+    "question": "How does acroturn.com establish and sustain its connection with milling through Sub_business relationship?",
+    "answer": "certification('ISO9001'), certifies('acroturn.com', 'ISO9001').\ncertification('ISO9001').\nentity('acroturn.com'), certifies('acroturn.com', 'ISO9001').\nentity('acroturn.com'), certifies('acroturn.com', 'acroturn.com').\nentity('acroturn.com'), processes('acroturn.com', '149401-us.all.biz').\nentity('acroturn.com'), processes('acroturn.com', 'rubber').\nentity('acroturn.com'), sub_business('acroturn.com', 'acroturn.com').\nentity('acroturn.com').\nmanufactor('149401-us.all.biz'), processes('acroturn.com', '149401-us.all.biz').\nmanufactor('149401-us.all.biz').\nmanufactor('acroturn.com'), sub_business('acroturn.com', 'acroturn.com').\nmanufactor('acroturn.com').\nmaterial('rubber'), processes('acroturn.com', 'rubber').\nmaterial('rubber').",
+    "timestamp": "2025-12-05T10:18:09.423149",
+    "latency_ms": 2986
+  },
+  {
+    "id": 6,
+    "question": "To what extent does advantechindustries.com maintain an active relationship with mininmgachine via Sub_industry relationships?",
+    "answer": "certification('ISO9001'), certifies('advantechindustries.com', 'ISO9001').\ncertification('ISO9001').\nentity('advantechindustries.com'), certifies('advantechindustries.com', 'ISO9001').\nentity('advantechindustries.com'), certifies('advantechindustries.com', 'advantechindustries.com').\nentity('advantechindustries.com').\nmanufactor('advantechindustries.com').",
+    "timestamp": "2025-12-05T10:18:14.405199",
+    "latency_ms": 1975
+  },
+  {
+    "id": 7,
+    "question": "How does aereos.com establish and sustain its connection with die_casting through Sub_business relationship?",
+    "answer": "certification('ISO9001'), certifies('aereos.com', 'ISO9001').\ncertification('ISO9001').\nentity('aereos.com'), certifies('aereos.com', 'ISO9001').\nentity('aereos.com'), certifies('aereos.com', 'aereos.com').\nentity('aereos.com'), processes('aereos.com', '149401-us.all.biz').\nentity('aereos.com'), processes('aereos.com', 'rubber').\nentity('aereos.com').\nmanufactor('149401-us.all.biz'), processes('aereos.com', '149401-us.all.biz').\nmanufactor('149401-us.all.biz').\nmaterial('rubber'), processes('aereos.com', 'rubber').\nmaterial('rubber').",
+    "timestamp": "2025-12-05T10:18:19.992573",
+    "latency_ms": 2584
+  },
+  {
+    "id": 8,
+    "question": "To what extent does aerodynamicinc.com maintain an active relationship with ironmill via Sub_industry relationships?",
+    "answer": "certification('ISO9001'), certifies('aerodynamicinc.com', 'ISO9001').\ncertification('ISO9001').\nentity('aerodynamicinc.com'), certifies('aerodynamicinc.com', 'ISO9001').\nentity('aerodynamicinc.com'), certifies('aerodynamicinc.com', 'aerodynamicinc.com').\nentity('aerodynamicinc.com').",
+    "timestamp": "2025-12-05T10:18:25.746439",
+    "latency_ms": 2748
+  },
+  {
+    "id": 9,
+    "question": "In what way do manufacturers like accu-turn.net interact with thermoforming through Sub_business relationships?",
+    "answer": "Sorry, I couldn't generate an answer due to an error.",
+    "timestamp": "2025-12-05T10:18:31.156528",
+    "latency_ms": 2409
+  },
+  {
+    "id": 10,
+    "question": "In what way do manufacturers like a1screwmachine.com interact with turning through Sub_business relationships?",
+    "answer": "Sorry, I couldn't generate an answer due to an error.",
+    "timestamp": "2025-12-05T10:18:34.732299",
+    "latency_ms": 573
+  },
+  {
+    "id": 11,
+    "question": "How does accuratemetalfl.com establish and sustain its connection with fastener through Sub_business relationship?",
+    "answer": "Sorry, I couldn't generate an answer due to an error.",
+    "timestamp": "2025-12-05T10:18:38.362278",
+    "latency_ms": 624
+  },
+  {
+    "id": 12,
+    "question": "What are the specific pathways through which advancedplastiform.com maintains links to mediacl via Sub_industry?",
+    "answer": "certification('ISO9001'), certifies('advancedplastiform.com', 'ISO9001').\nentity('advancedplastiform.com'), certifies('advancedplastiform.com', 'ISO9001').\nentity('advancedplastiform.com'), certifies('advancedplastiform.com', 'advancedplastiform.com').\nentity('advancedplastiform.com'), processes('advancedplastiform.com', '149401-us.all.biz').\nentity('advancedplastiform.com'), processes('advancedplastiform.com', 'rubber').\nentity('advancedplastiform.com'), sub_business('advancedplastiform.com', 'advancedplastiform.com').\nmanufactor('149401-us.all.biz'), processes('advancedplastiform.com', '149401-us.all.biz').\nmanufactor('advancedplastiform.com'), sub_business('advancedplastiform.com', 'advancedplastiform.com').\nmaterial('rubber'), processes('advancedplastiform.com', 'rubber').",
+    "timestamp": "2025-12-05T10:18:48.534121",
+    "latency_ms": 7170
+  },
+  {
+    "id": 13,
+    "question": "To what extent does a-i-mfg.com maintain an active relationship with textileproduct via Sub_industry relationships?",
+    "answer": "certification('ISO9001'), certifies('a-i-mfg.com', 'ISO9001').\ncertification('ISO9001').\nentity('a-i-mfg.com'), certifies('a-i-mfg.com', 'ISO9001').\nentity('a-i-mfg.com'), certifies('a-i-mfg.com', 'a-i-mfg.com').\nentity('a-i-mfg.com').",
+    "timestamp": "2025-12-05T10:18:53.524248",
+    "latency_ms": 1978
+  },
+  {
+    "id": 14,
+    "question": "To what extent does additivemanufacturingllc.cmo maintain an active relationship with electric via Sub_industry relationships?",
+    "answer": "certification('ISO9001').\ncertifies('additivemanufacturingllc.com', 'ISO9001').\ncertifies('additivemanufacturingllc.com', 'additivemanufacturingllc.com').\nentity('additivemanufacturingllc.com').\nsub_business('additivemanufacturingllc.com', 'additivemanufacturingllc.com').",
+    "timestamp": "2025-12-05T10:18:59.907203",
+    "latency_ms": 3381
+  },
+  {
+    "id": 15,
+    "question": "How does advancedplastiform.com establish and sustain its connection with grinding through Sub_business relationship?",
+    "answer": "certification('ISO9001').\ncertifies('advancedplastiform.com', 'ISO9001').\ncertifies('advancedplastiform.com', 'advancedplastiform.com').\nentity('advancedplastiform.com').\nmanufactor('149401-us.all.biz').\nmaterial('rubber').\nprocesses('advancedplastiform.com', '149401-us.all.biz').\nprocesses('advancedplastiform.com', 'rubber').",
+    "timestamp": "2025-12-05T10:19:05.238616",
+    "latency_ms": 2326
+  },
+  {
+    "id": 16,
+    "question": "In what way do manufacturers like accrafab.com interact with lasei_cutting through Sub_business relationships?",
+    "answer": "certification('ISO9001'), certifies('accrafab.com', 'ISO9001').\nentity('accrafab.com'), certifies('accrafab.com', 'ISO9001').\nentity('accrafab.com'), certifies('accrafab.com', 'accrafab.com').\nmanufactor('149401-us.all.biz'), processes('accrafab.com', '149401-us.all.biz').\nmanufactor('accrafab.com'), processes('accrafab.com', '149401-us.all.biz').\nmanufactor('accrafab.com'), processes('accrafab.com', 'rubber').\nmaterial('rubber'), processes('accrafab.com', 'rubber').",
+    "timestamp": "2025-12-05T10:19:12.273195",
+    "latency_ms": 4028
+  },
+  {
+    "id": 17,
+    "question": "How does acrmachine.com establish and sustain its connection with nitriding through Sub_business relationship?",
+    "answer": "certification('ISO9001'), certifies('acrmachine.com', 'ISO9001').\ncertification('ISO9001').\nentity('acrmachine.com'), certifies('acrmachine.com', 'ISO9001').\nentity('acrmachine.com'), certifies('acrmachine.com', 'acrmachine.com').\nentity('acrmachine.com'), processes('acrmachine.com', '149401-us.all.biz').\nentity('acrmachine.com'), processes('acrmachine.com', 'rubber').\nentity('acrmachine.com').\nmanufactor('149401-us.all.biz'), processes('acrmachine.com', '149401-us.all.biz').\nmanufactor('149401-us.all.biz').\nmaterial('rubber'), processes('acrmachine.com', 'rubber').\nmaterial('rubber').",
+    "timestamp": "2025-12-05T10:19:18.507000",
+    "latency_ms": 3230
+  },
+  {
+    "id": 18,
+    "question": "How does acs-parts.com establish and sustain its connection with milling through Sub_business relationship?",
+    "answer": "certification('ISO9001'), certifies('acs-parts.com', 'ISO9001').\ncertification('acs-parts.com'), certifies('acs-parts.com', 'acs-parts.com').\nentity('acs-parts.com'), certifies('acs-parts.com', 'ISO9001').\nentity('acs-parts.com'), certifies('acs-parts.com', 'acs-parts.com').\nmanufactor('149401-us.all.biz'), processes('acs-parts.com', '149401-us.all.biz').\nmanufactor('acs-parts.com'), processes('acs-parts.com', '149401-us.all.biz').\nmanufactor('acs-parts.com'), processes('acs-parts.com', 'rubber').\nmaterial('rubber'), processes('acs-parts.com', 'rubber').",
+    "timestamp": "2025-12-05T10:19:24.212410",
+    "latency_ms": 2702
+  },
+  {
+    "id": 19,
+    "question": "How does a1screwmachine.com establish and sustain its connection with polishing through Sub_business relationship?",
+    "answer": "certification('ISO9001').\ncertifies('a1screwmachine.com', 'ISO9001').\ncertifies('a1screwmachine.com', 'a1screwmachine.com').\nentity('a1screwmachine.com').\nmanufactor('149401-us.all.biz').\nmaterial('rubber').\nprocesses('a1screwmachine.com', '149401-us.all.biz').\nprocesses('a1screwmachine.com', 'rubber').",
+    "timestamp": "2025-12-05T10:19:29.950591",
+    "latency_ms": 2734
+  },
+  {
+    "id": 20,
+    "question": "What are the specific pathways through which additivemanufactuirngllc.com maintains links to miningmachine via Sub_industry?",
+    "answer": "Sorry, I couldn't generate an answer due to an error.",
+    "timestamp": "2025-12-05T10:19:35.165991",
+    "latency_ms": 2212
+  }
+]
