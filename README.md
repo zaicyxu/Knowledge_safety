@@ -47,8 +47,8 @@ These keywords are embedded and matched against graph entities to locate the mos
 
 The overall workflow of the proposed framework is illustrated below.
 
-> **<img width="3928" height="2152" alt="image" src="https://github.com/user-attachments/assets/32c36156-fabc-44d1-bdea-dd3609d04397" />
-**  
+> <img width="3928" height="2152" alt="image" src="https://github.com/user-attachments/assets/32c36156-fabc-44d1-bdea-dd3609d04397" />
+ 
 ```
 
 **Workflow Summary:**
