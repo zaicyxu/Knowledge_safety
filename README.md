@@ -1,4 +1,3 @@
-````markdown
 # Knowledge_Safety
 
 A RAG-based Large Language Model Framework for Tracing Requirements to Design Information in Safety-Critical Systems
@@ -142,19 +141,6 @@ Following the steps above reproduces the requirement-to-design tracing described
 
 ---
 
-## Citation
-
-```bibtex
-@article{su2025ragads,
-  title   = {A RAG-based Large Language Model Framework for Tracing Requirements to Design Information of Automated Driving Systems},
-  author  = {Su, Peng and Xu, Rui and Huang, Jiacai and Chen, Dejiu},
-  journal = {TBD},
-  year    = {2025}
-}
-```
-
----
-
 ## License
 
 MIT License.
@@ -164,7 +150,5 @@ MIT License.
 ## Contact
 
 * Rui Xu — [rxu@kth.se](mailto:rxu@kth.se)
-* Peng Su — [pengsu@njit.edu.cn](mailto:pengsu@njit.edu.cn)
 
-```
 ```
