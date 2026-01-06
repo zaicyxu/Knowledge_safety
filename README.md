@@ -1,164 +1,239 @@
-# Traceability Analysis of LLM and Prolog
 
-## Current Issues
+# Knowledge_Safety
 
-#### ~~Issues from the LLM Sides~~
+A RAG-based Large Language Model Framework for Tracing Requirements to Design Information in Safety-Critical Systems
 
-1. ~~The Final Answer from LLM is not stable yet. For example, regarding the following prompts, the LLM sometimes make final answers  somtimes nor.~~
+---
 
-	- ~~Which kind of algorithm has been used in Autonomous braking system?~~
-	- ~~What kind of functionalities containing this system?~~
-	- ~~Which sensor is most related to the pedestrian detection?~~
+## Overview
 
+This repository provides an implementation of a **Retrieval-Augmented Generation (RAG)** framework that integrates **graph-based knowledge modeling** with **Large Language Models (LLMs)** to support **requirement analysis and safety assurance** in complex engineering systems, particularly **Automated Driving Systems (ADS)**.
 
-3. What's the main workflow of the framework?
+In safety-critical system development, a central challenge is how to **systematically trace natural-language requirements to heterogeneous design artifacts** (e.g., components, algorithms, models, sensors, and Operational Design Domain (ODD) elements) in a precise, interpretable, and scalable manner.  
+Conventional LLM-based approaches often suffer from hallucination, lack of domain grounding, and limited capability in multi-level reasoning.
 
-a) **Constructing the graph-based knowledgebase**
+To address these issues, this project proposes a framework that:
+- Models design information as a **graph-based knowledge base**;
+- Retrieves relevant subgraphs via **multi-hop reasoning**;
+- Integrates retrieved domain knowledge into LLM prompts using **RAG**;
+- Generates **structured and explainable outputs** that explicitly link requirements to design information.
 
-b) **Constructing the logic-based knowledgebase**
+---
 
-​	b.1) Input: Requirement with Nature Language Representations
+## Key Idea
 
-​	b.2) LLM-based Interpreter used to translate the reuqirements to logic representations (RAG).
+The framework is built on three core concepts:
 
-​	b.3) LLM-based aligner used to support the multiple step reasoning.
+### 1. Graph-based Knowledge Base
+Design information is explicitly modeled as a knowledge graph:
+- **Nodes** represent entities such as system components, sensors, algorithms, DNN models, and ODD elements.
+- **Edges** represent domain-specific dependencies and hierarchical relations.
 
-​	b.4) The purpose of logic-based knowledgebase is to map the requirements with the design-time information.
+This representation enables efficient retrieval and interpretable multi-hop reasoning.
 
-​	**Key Issues**:
+### 2. Retrieval-Augmented Generation (RAG)
+Instead of relying solely on the LLM’s internal knowledge, the framework:
+- Retrieves the most relevant entities and their dependencies from the knowledge graph;
+- Injects this information into the prompt;
+- Grounds the LLM’s responses in domain-specific facts, reducing hallucination.
 
-​	
+### 3. Logic Stratification for Requirement Analysis
+Natural-language requirements are decomposed into domain-relevant terminologies.  
+These keywords are embedded and matched against graph entities to locate the most relevant subgraphs for reasoning.
 
- c) **Traceability analysis regarding the design information.**
+---
 
-​	The design information includes: 1) Test cases 2) Data argument statement....
+## Framework Architecture
 
-​	c.1) Input: Test cases and other systems-related questions
+The overall workflow of the proposed framework is illustrated below.
 
-​	c.2) LLM-based Interprete
+> **<img width="3928" height="2152" alt="image" src="https://github.com/user-attachments/assets/32c36156-fabc-44d1-bdea-dd3609d04397" />
+**  
+> Replace this placeholder with your figure, for example:
+>
+> ```markdown
+> ![Framework Overview](./figures/framework.png)
+> ```
 
+**Workflow Summary:**
 
+1. **Knowledge Base Construction**  
+   Domain and system design artifacts are modeled using a graph-based meta-model and instantiated into a knowledge graph (e.g., in Neo4j).
 
-​	**Some examples of test cases:**
+2. **Indexing and Retrieval**  
+   Entities in the graph are embedded for semantic indexing.  
+   Input requirements are analyzed via logic stratification to extract key terminologies, which are then matched to graph entities to retrieve relevant subgraphs (including multi-hop dependencies).
 
-​		**TC-P01 / Cut-in detection (highway)**
+3. **LLM-based Reasoning**  
+   Retrieved knowledge is injected into structured prompts using In-Context Learning (ICL).  
+   The LLM generates structured responses that explicitly trace requirements to design information.
 
-- **Env:** Proving ground, dry daylight.
-- **Stimuli:** Lead car 100 km/h; adjacent car cuts in with Δv=-10 km/h, gap 15 m.
-- **Expected:** ADS re-tracks new lead in ≤300 ms; no false emergency brake.
-- **Metrics:** Track switch latency ≤300 ms; lateral jerk ≤3 m/s²; min TTC ≥2.0 s.
+---
 
-​	
+## Main Contributions
 
-​	**TC-P02 / Motorcycle in blind spot**
+- **Graph-based RAG for Requirement Traceability**  
+  A functional framework that combines knowledge graphs and LLMs to trace requirements to design artifacts in safety-critical systems.
 
-- **Env**: Sim + track.
+- **Structured and Interpretable Outputs**  
+  Generates structured responses that make dependencies between requirements and design information explicit and explainable.
 
-- **Stimuli:** Motorcycle approaches from rear quarter at 120 km/h.
+- **Logic Stratification for Domain Queries**  
+  Reduces ambiguity in natural-language requirements by extracting and matching domain-specific terminologies.
 
-- **Expected:** Correct classification in blind-spot; inhibit lane change.
+- **Empirical Validation**  
+  Demonstrates improved precision, recall, and F1-score over:
+  - LLM without RAG;
+  - RAG with unstructured (text-based) knowledge;
+  - Prompt engineering (e.g., Chain-of-Thought);
+  - RAG without logic stratification.
 
-- **Metrics:** Detection range ≥50 m; false lane-change probability = 0.
+---
 
-  
+## Repository Structure
 
-​	**TC-P03 / Occluded pedestrian at mid-block**
+```text
+Knowledge_Safety/
+├── data/                 # Datasets and example requirements
+├── graph/                # Knowledge graph schema and construction scripts
+├── retrieval/            # Indexing, embedding, and multi-hop retrieval logic
+├── llm/                  # Prompt templates and LLM interaction
+├── interface/            # Optional UI / visualization components
+├── figures/              # Framework and example knowledge graphs
+├── Test_Query_without_requirement.sql
+├── configuration.py
+├── main_rag_test.py
+└── README.md
+````
 
-- **Env:** Urban mock street; parked van occludes 80% of body.
-- **Stimuli:** Pedestrian emerges walking 1.2 m/s.
-- **Expected:** Early hazard hypothesis; speed reduction before full visibility.
-- **Metrics:** Speed ≤15 km/h before full reveal; no collision; min clearance ≥1.5 m.
-- 
+---
 
- d) **Whats the purpose of Prolog?**
+## Example of the Input Questions (Requirements)
 
+The following examples illustrate typical requirement queries used to evaluate the framework.
+Each requirement is written in natural language and aims to trace high-level safety or functional constraints to concrete design information stored in the knowledge graph.
 
+**Examples:**
 
+1. **“The object detection module shall reliably detect pedestrians in urban environments.”**
+2. **“The perception system shall ensure robust operation under adverse weather conditions.”**
+3. **“The braking control component shall meet functional safety requirements for emergency scenarios.”**
 
+These requirements are used as input to the RAG-based LLM, which retrieves relevant entities and relationships from the graph-based knowledge base and generates structured, interpretable responses.
 
-## Updated on 7th Oct
+---
 
+## How to Run the Test
 
+The framework evaluates requirement tracing by querying a **Neo4j-based knowledge graph** and performing RAG-based reasoning with an LLM.
 
-Example of the input questions. (Requirements)
+Follow the steps below to reproduce the experiments and test the system with the example requirements.
 
-1. **Object Tracking Update**
+---
 
-   The system **shall update all object tracks upon receipt of new sensor data** to ensure accurate and consistent environmental representation.
+### Step 1: Build the Knowledge Graph in Neo4j
 
-2. **Pedestrian Detection**
+1. Start your Neo4j database service.
+2. Open the **Neo4j Browser**.
+3. Execute the following Cypher script to construct the database:
 
-   The **object detection module shall reliably detect pedestrians** with accurate width and position estimation at a minimum distance of *[specify distance, e.g., 50 m]* under nominal conditions.
+```sql
+Test_Query_without_requirement.sql
+```
 
-3. **Lane Boundary Segmentation**
+This script creates the nodes, relationships, and schema required by the framework, including:
 
-   The **semantic segmentation network shall identify lane boundaries** and drivable areas under nominal lighting and weather conditions.
+* System components,
+* Sensors,
+* Algorithms,
+* DNN models,
+* ODD elements and their dependencies.
 
-4. **Perception Self-Validation**
+---
 
-   The **machine learning (ML) perception module shall periodically self-validate** using reference scenes or calibration targets to ensure runtime consistency and prevent model drift.
+### Step 2: Configure Database Connection
 
-5. **Lidar Semantic Segmentation**
+Edit the Neo4j authentication settings in `configuration.py`:
 
-   The **lidar perception subsystem shall perform semantic segmentation** of point cloud data and distribute classified data to functional components such as obstacle detection and free-space estimation.
+```python
+# configuration.py
 
-6. **Sensor Fusion**
+NEO4J_URI = "bolt://localhost:7687"
+NEO4J_USERNAME = "your_username"
+NEO4J_PASSWORD = "your_password"
+```
 
-   The **sensor fusion module shall integrate data from lidar, radar, camera, and ultrasonic sensors** to generate a unified and temporally consistent environmental model.
+Ensure that the URI, username, and password match your local Neo4j instance.
 
-7. **Environmental Awareness**
+---
 
-   Each **sensor subsystem shall analyze its respective portion of the external environment** (e.g., radar for long-range objects, cameras for visual classification, lidar for depth and geometry).
+### Step 3: Run the RAG Test
 
-8. **Parking Assistance**
+Execute the main test script:
 
-   The **parking assistance module shall detect and evaluate available parking spaces**, determine suitability, and guide the vehicle during parking maneuvers.
+```bash
+python main_rag_test.py
+```
 
-9. **Adaptive Cruise and Car-Following**
+This script will:
 
-   The **adaptive cruise control and car-following modules shall detect leading vehicles and lane markings** to maintain safe following distances and lane discipline.
+1. Load the knowledge graph from Neo4j.
+2. Apply logic stratification to extract key terms from the input requirement.
+3. Retrieve the most relevant entities and their multi-hop dependencies.
+4. Construct RAG-based prompts with retrieved knowledge.
+5. Invoke the LLM to generate structured, explainable outputs.
 
-10. **Lane Keeping and Trajectory Prediction**
+---
 
-    The **vehicle control module shall predict and maintain a feasible trajectory** within current lane boundaries using current and
+### Step 4: Test with Example Requirements
 
-11，**Object Detection Accuracy**
+Use the requirements listed in **“Example of the Input Questions (Requirements)”** as input for testing.
+Each requirement will be processed by the framework, and the corresponding design elements (e.g., components, algorithms, models, sensors, ODD elements) will be returned in a structured and interpretable format.
 
-​	The object detection module shall achieve at least 95% precision and recall for pedestrian detection 	under nominal lighting conditions.
+---
 
-12. **Model Update Mechanism**
+## Notes
 
-    The ML model deployment process shall support over-the-air updates for trajectory prediction models without system downtime.
-	
-13. **Sensor Redundancy**
+* Ensure that **Neo4j is running** before executing `main_rag_test.py`.
+* The framework assumes that the database schema is constructed exclusively using `Test_Query_without_requirement.sql`.
+* All outputs are generated using **graph-based retrieval combined with RAG**, rather than relying solely on the LLM’s internal knowledge.
 
-    The system shall maintain functional safety through redundant sensor inputs from both camera and lidar for critical object detection tasks.
+---
 
-14. **Real-Time Processing**
+## Reproducibility
 
-    All perception algorithms shall process sensor data within 100 milliseconds to support real-time decision-making.
+By following the steps above, users can reproduce the requirement tracing process described in the paper and verify how the framework systematically links natural-language requirements to system design information in a safety-critical context.
 
-15. **Brake Actuation Latencyv**
+---
 
-    The PAEB system shall activate brakes within 150 milliseconds after pedestrian detection confirmation.
+## Citation
 
-16. **Trajectory Prediction Confidence**
+If you use this work in your research, please cite the corresponding paper:
 
-    The trajectory prediction module shall output a confidence score for each predicted path, with a minimum threshold of 80% for actuation.
-	
-17. **Adaptive Cruise Control Smoothness**
+```bibtex
+@article{su2025ragads,
+  title   = {A RAG-based Large Language Model Framework for Tracing Requirements to Design Information of Automated Driving Systems},
+  author  = {Su, Peng and Xu, Rui and Huang, Jiacai and Chen, Dejiu},
+  journal = {TBD},
+  year    = {2025}
+}
+```
 
-    The ACC system shall adjust throttle and brake inputs smoothly to maintain passenger comfort while following a leading vehicle.
-	
-18. **Lane Keeping Assist Boundaries**
+---
 
-    The lane keeping system shall only activate when lane boundaries are detected with high confidence and vehicle speed exceeds 60 km/h.
+## License
 
-19. **ML Safety Assurance Traceability**
+This project is released under the MIT License (or replace with your chosen license).
 
-    Each ML safety requirement shall be traceable to one or more system-level safety requirements through the ML development flow.
-	
-20. **End-to-End Latency Budget**
+---
 
-	The total latency from sensor data capture to actuator command shall not exceed 200 milliseconds for any safety-critical function.
+## Contact
+
+For questions, collaborations, or issues, please open an issue on GitHub or contact:
+
+* Rui Xu — [rxu@kth.se](mailto:rxu@kth.se)
+
+
+```
+
 
