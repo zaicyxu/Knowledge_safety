@@ -28,8 +28,8 @@ The framework addresses the problem of **tracing natural-language requirements t
 ## Framework Architecture
 
 > **[Framework Figure Placeholder]**  
-> `![Framework Overview](<img width="3928" height="2152" alt="image" src="https://github.com/user-attachments/assets/3697267a-8f1b-481d-80af-f437861c2a8a" />
-)`
+> ![Framework Overview](https://github.com/user-attachments/assets/3697267a-8f1b-481d-80af-f437861c2a8a)
+
 
 
 **Workflow:**
