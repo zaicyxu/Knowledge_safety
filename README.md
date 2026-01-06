@@ -49,11 +49,7 @@ The overall workflow of the proposed framework is illustrated below.
 
 > **<img width="3928" height="2152" alt="image" src="https://github.com/user-attachments/assets/32c36156-fabc-44d1-bdea-dd3609d04397" />
 **  
-> Replace this placeholder with your figure, for example:
->
-> ```markdown
-> ![Framework Overview](./figures/framework.png)
-> ```
+```
 
 **Workflow Summary:**
 
