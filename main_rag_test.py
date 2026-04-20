@@ -607,18 +607,18 @@ class Neo4jRAGSystem:
 
         return new_facts
 
-    def generate_answer(self, user_question, relevant_entities):
+   def generate_answer(self, input_requirement, relevant_entities):
         """
-        Generate an answer using Gemini LLM with optimized prompt engineering.
-        Single-function version (no nested helper functions).
+        Generate a structured answer using Gemini LLM.
         """
         if not relevant_entities:
             return "% No facts found.\n"
 
-        keywords = self.extract_keywords(user_question)
+        # Targeted keyword extraction from the formal requirement
+        keywords = self.extract_keywords(input_requirement)
 
-        # Generate Prolog facts from retrieved entities
-        prolog_facts = []
+        # 1. CONSTRUCTION OF Q_context: Knowledge Base facts generation
+        structured_facts = []
         for entity in relevant_entities:
             try:
                 node1 = entity.get('node1', {})
@@ -626,18 +626,14 @@ class Neo4jRAGSystem:
                 raw_n1_name = node1.get('name') if node1.get('name') is not None else f"node_{node1_id}"
                 e1_name = self._safe_raw(raw_n1_name)
 
-                # Extract primary label
                 raw_e1_label = None
                 if node1.get('type'):
                     t = node1.get('type')
-                    if isinstance(t, (list, tuple)) and len(t) > 0:
-                        raw_e1_label = t[0]
-                    else:
-                        raw_e1_label = t
+                    raw_e1_label = t[0] if isinstance(t, (list, tuple)) and len(t) > 0 else t
+                
                 e1_type = self._label_to_prolog_predicate(raw_e1_label)
-                prolog_facts.append(f"{e1_type}({e1_name}).")
+                structured_facts.append(f"{e1_type}({e1_name}).")
 
-                # Process connected nodes and relationships
                 connected = entity.get('connected_nodes') or []
                 relations = entity.get('relations') or []
 
@@ -649,44 +645,41 @@ class Neo4jRAGSystem:
                     raw_e2_label = None
                     if node.get('type'):
                         t2 = node.get('type')
-                        if isinstance(t2, (list, tuple)) and len(t2) > 0:
-                            raw_e2_label = t2[0]
-                        else:
-                            raw_e2_label = t2
+                        raw_e2_label = t2[0] if isinstance(t2, (list, tuple)) and len(t2) > 0 else t2
+                    
                     e2_type = self._label_to_prolog_predicate(raw_e2_label)
-                    prolog_facts.append(f"{e2_type}({e2_name}).")
+                    structured_facts.append(f"{e2_type}({e2_name}).")
 
                     if idx < len(relations):
                         relation_raw = relations[idx]
                         relation_pred = self._label_to_prolog_predicate(relation_raw)
-                        prolog_facts.append(f"{relation_pred}({e1_name}, {e2_name}).")
+                        structured_facts.append(f"{relation_pred}({e1_name}, {e2_name}).")
 
             except Exception as e:
                 print(f"[WARN] Skipping malformed entity: {e}")
                 continue
 
-        # canonicalize DB facts
-        prolog_facts = sorted(set(prolog_facts))
-        facts_str = "\n".join(prolog_facts) if prolog_facts else "% No facts available"
+        structured_facts = sorted(set(structured_facts))
+        facts_str = "\n".join(structured_facts) if structured_facts else "% No facts available"
 
-        # Call function-calling wrapper to request structured facts from the LLM
-        llm_generated_facts = None
+        # 2. CALL LLM FOR FACT GENERATION: (Q_query context)
+        llm_generated_output = None
         try:
-            llm_generated_facts = self.call_llm_for_structured_facts(user_question, facts_str)
+            llm_generated_output = self.call_llm_for_structured_facts(input_requirement, facts_str)
         except Exception as e:
             print(f"[WARN] call_llm_for_structured_facts error: {e}")
-            llm_generated_facts = None
+            llm_generated_output = None
 
-        # Normalize LLM output to candidate lines
+        # 3. OUTPUT NORMALIZATION AND PARSING
         cand_lines = []
-        if llm_generated_facts:
-            if isinstance(llm_generated_facts, str):
-                cand_lines = [ln.strip() for ln in llm_generated_facts.splitlines() if ln.strip()]
-            elif isinstance(llm_generated_facts, dict):
+        if llm_generated_output:
+            if isinstance(llm_generated_output, str):
+                cand_lines = [ln.strip() for ln in llm_generated_output.splitlines() if ln.strip()]
+            elif isinstance(llm_generated_output, dict):
                 found = False
-                for k in ("facts", "prolog", "lines", "generated_facts"):
-                    if k in llm_generated_facts:
-                        val = llm_generated_facts[k]
+                for k in ("facts", "lines", "generated_facts"):
+                    if k in llm_generated_output:
+                        val = llm_generated_output[k]
                         if isinstance(val, list):
                             cand_lines.extend([str(x).strip() for x in val if x])
                         elif isinstance(val, str):
@@ -694,147 +687,76 @@ class Neo4jRAGSystem:
                         found = True
                         break
                 if not found:
-                    for v in llm_generated_facts.values():
+                    for v in llm_generated_output.values():
                         if isinstance(v, str):
                             cand_lines.extend([ln.strip() for ln in v.splitlines() if ln.strip()])
                         elif isinstance(v, list):
                             cand_lines.extend([str(x).strip() for x in v if isinstance(x, (str, int))])
-            elif isinstance(llm_generated_facts, (list, tuple)):
-                for el in llm_generated_facts:
-                    if isinstance(el, str):
-                        cand_lines.append(el.strip())
-                    else:
-                        cand_lines.append(str(el).strip())
+            elif isinstance(llm_generated_output, (list, tuple)):
+                for el in llm_generated_output:
+                    cand_lines.append(el.strip() if isinstance(el, str) else str(el).strip())
 
-        # Validate candidate lines conservatively
+        # 4. VALIDATE CANDIDATE LINES CONSERVATIVELY (Firewall logic)
         validated_llm_facts = []
         for ln in cand_lines:
-            if not ln:
-                continue
-            if '\n' in ln or '\r' in ln:
-                print(f"[WARN] Rejecting LLM fact (multiline): {ln}")
-                continue
-            if len(ln) > 2000:
-                print(f"[WARN] Rejecting LLM fact (too long): {ln}")
-                continue
+            if not ln or '\n' in ln or '\r' in ln: continue
+            if len(ln) > 2000: continue
             control_found = False
             for ch in ln:
                 if ord(ch) < 9:
                     control_found = True
                     break
-            if control_found:
-                print(f"[WARN] Rejecting LLM fact (control char): {ln}")
-                continue
-            # basic syntactic shape: must contain '('
-            if '(' not in ln:
-                print(f"[WARN] Rejecting LLM fact (no '('): {ln}")
-                continue
-            if not ln.endswith('.'):
-                ln = ln + '.'
+            if control_found: continue
+            if '(' not in ln: continue
+            if not ln.endswith('.'): ln = ln + '.'
             validated_llm_facts.append(ln)
 
-        # Merge validated LLM facts into the prolog_facts
         if validated_llm_facts:
-            merged = set(prolog_facts)
+            merged = set(structured_facts)
             for f in validated_llm_facts:
-                if f not in merged:
-                    merged.add(f)
-            prolog_facts = sorted(merged)
-        else:
-            if llm_generated_facts is None:
-                print(
-                    "[INFO] LLM structured-facts call returned None or raised an error; proceeding with DB facts only.")
-            else:
-                print("[INFO] LLM returned no valid facts after validation; proceeding with DB facts only.")
+                if f not in merged: merged.add(f)
+            structured_facts = sorted(merged)
+        
+        facts_str = "\n".join(structured_facts) if structured_facts else "% No facts available"
 
-        facts_str = "\n".join(prolog_facts) if prolog_facts else "% No facts available"
-
-        # Prompt engineering
-        # input_text = f"""
-        # ROLE:
-        # You are an expert in automotive safety engineering and autonomous driving systems.
-        # Your task is to analyze the safety requirements of an Automated Driving System (ADS)
-        # using the provided structured knowledge base written in Prolog-like format.
-        #
-        # KNOWLEDGE BASE (DO NOT MODIFY):
-        # {facts_str}
-        #
-        # USER QUESTION:
-        # {user_question}
-        #
-        # INSTRUCTIONS:
-        # 1. Identify and summarize the key safety requirements relevant to the question.
-        # 2. Analyze the knowledge base to find all directly referenced single-element entities and facts that describe or support these requirements.
-        # 3. Evaluate whether the described system satisfies each requirement, citing exact elements from the knowledge base.
-        # 4. Perform DEPENDENCY TRACING:
-        #    - List all directly referenced single-argument facts (e.g., algorithm(ObjectTracking)., sensor(Lidar).).
-        #    - Exclude compound relations (e.g., consist(ObjectTracking, ACC). or serve(Mono Camera, Object Tracking).).
-        #    - Each fact must appear exactly as written in the knowledge base, preserving capitalization, spacing, and formatting.
-        # 5. Provide a final structured answer with two strictly separated sections:
-        #    (1) Dependency Trace: all matched single-argument entities.
-        #    (2) Prolog-Based Rules: relations connecting these entities to requirements.
-        # 6. Generate Prolog rules that define relationships between each requirement (ReqA) and its matched entities.
-        #    - Example schema:
-        #         requirement_algorithm(ReqA, AlgorithmName).
-        #         requirement_sensor(ReqA, SensorName).
-        #         requirement_model(ReqA, ModelName).
-        #         requirement_component(ReqA, ComponentName).
-        #         requirement_system_description(ReqA, SystemDescriptionName).
-        #    - Example rule definitions:
-        #         reqrelated_algorithm(ReqA, Algo) :- requirement(ReqA), requirement_algorithm(ReqA, Algo).
-        #         reqrelated_sensor(ReqA, S) :- requirement(ReqA), requirement_sensor(ReqA, S).
-        #         reqrelated_model(ReqA, M) :- requirement(ReqA), requirement_model(ReqA, M).
-        #         reqrelated_component(ReqA, C) :- requirement(ReqA), requirement_component(ReqA, C).
-        #         reqrelated_system_description(ReqA, SD) :- requirement(ReqA), requirement_system_description(ReqA, SD).
-        #
-        # ENTITY NAME INTEGRITY RULES (CRITICAL):
-        # - You MUST preserve exact spelling, capitalization, and spacing of all entity names as they appear in the knowledge base.
-        # - Never modify, quote, or translate any entity name.
-        # - Treat entity names as literal identifiers.
-        # - Any quotation marks or punctuation around entity names will be removed automatically after generation, so output them as-is.
-        #
-        # IMPORTANT CONSTRAINTS:
-        # - Do not invent or infer missing entities.
-        # - If no matching elements are found, explicitly write: "No matching element found."
-        # - Use only minimal and clear text — do not output natural-language reasoning.
-        # - The final answer must be fully structured, containing only the two required sections.
-        #
-        # OUTPUT FORMAT (STRICT):
-        # Dependency Trace
-        # [list of single-argument entities, one per line, ending with '.']
-        #
-        # Prolog-Based Rules
-        # [requirement_* and reqrelated* facts, one per line, ending with '.']
-        #
-        # Final Answer:
-        # """
+        # 5. INTEGRATED PROMPT SYNTHESIS: {Q_inst, Q_context, Q_query}
+        # EXACT RESTORATION OF ORIGINAL PROMPT LOGIC
         input_text = f"""
         ROLE:
         You are an expert in automotive safety engineering and autonomous driving systems.
         Your task is to analyze the safety requirements of an Automated Driving System (ADS)
         using the provided structured knowledge base written in Prolog-like format.
 
-        KNOWLEDGE BASE (DO NOT MODIFY):
+        KNOWLEDGE BASE (Q_context):
         {facts_str}
 
-        USER QUESTION:
-        {user_question}
+        INPUT REQUIREMENT (Q_query):
+        {input_requirement}
 
-        INSTRUCTIONS:
-        1. Identify and summarize the key safety requirements relevant to the question.
-        2. Analyze the knowledge base to find all directly referenced single-element entities and facts that describe or support these requirements.
+        INSTRUCTIONS (Q_inst):
+        1. Identify and summarize the key safety requirements relevant to the analysis.
+        2. Analyze the knowledge base to find all directly referenced single-element entities and facts.
         3. Evaluate whether the described system satisfies each requirement, citing exact elements from the knowledge base.
         4. Perform DEPENDENCY TRACING:
-           - List all directly referenced single-argument facts (e.g., algorithm(ObjectTracking)., model(YOLOv5)., sensor(Lidar).).
-           - Each fact must appear exactly as written in the knowledge base, preserving capitalization, spacing, and formatting.
+            - List all directly referenced single-argument facts (e.g., algorithm(ObjectTracking)., sensor(Lidar).).
+            - Each fact must appear exactly as written in the knowledge base, preserving capitalization, spacing, and formatting.
         5. Provide a final structured answer with two strictly separated sections:
-           Dependency Trace: all matched single-argument entities.
+            (1) Dependency Trace: all matched single-argument entities.
+            (2) Prolog-Based Rules: relations connecting these entities to requirements.
+        6. Generate Prolog rules that define relationships between the requirement (ReqA) and its matched entities.
+            - Example schema:
+                 requirement_algorithm(ReqA, AlgorithmName).
+                 requirement_sensor(ReqA, SensorName).
+                 requirement_model(ReqA, ModelName).
+            - Example rule definitions:
+                 reqrelated_algorithm(ReqA, Algo) :- requirement(ReqA), requirement_algorithm(ReqA, Algo).
+                 reqrelated_sensor(ReqA, S) :- requirement(ReqA), requirement_sensor(ReqA, S).
+                 reqrelated_model(ReqA, M) :- requirement(ReqA), requirement_model(ReqA, M).
 
         ENTITY NAME INTEGRITY RULES (CRITICAL):
         - You MUST preserve exact spelling, capitalization, and spacing of all entity names as they appear in the knowledge base.
         - Never modify, quote, or translate any entity name.
         - Treat entity names as literal identifiers.
-        - Any quotation marks or punctuation around entity names will be removed automatically after generation, so output them as-is.
 
         IMPORTANT CONSTRAINTS:
         - Do not invent or infer missing entities.
@@ -846,11 +768,15 @@ class Neo4jRAGSystem:
         Dependency Trace
         [list of single-argument entities, one per line, ending with '.']
 
+        Prolog-Based Rules
+        [requirement_* and reqrelated* facts, one per line, ending with '.']
+
+        Final Answer:
         """
 
-        print("\n[OPTIMIZED LLM PROMPT]\n" + input_text)
+        print("\n[OPTIMIZED TRACEABILITY PROMPT]\n" + input_text)
         return self.generate_with_llm(input_text)
-
+     
     def generate_with_llm(self, input_text):
         """Generate response using Gemini LLM with output cleaning."""
         try:
@@ -967,15 +893,6 @@ class Neo4jRAGSystem:
         out.append("Dependency Trace")
         out.extend(deps)
         out.append("")
-
-        # if facts:
-        #     out.append("Prolog-Based Facts")
-        #     out.extend(facts)
-        #     out.append("")
-        #
-        # if rules:
-        #     out.append("Prolog-Based Rules")
-        #     out.extend(rules)
 
         return "\n".join(out)
 
